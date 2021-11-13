@@ -1,13 +1,15 @@
 import { useState } from 'react';
+import { useSignup } from '../../hooks/useSignup';
 import './Signup.scss';
 
 function Signup() {
-  const [username, setUsername] = useState('');
+  const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { signup, isPending, error } = useSignup();
 
-  const handleUsername = (e) => {
-    setUsername(e.target.value);
+  const handleDisplayName = (e) => {
+    setDisplayName(e.target.value);
   };
 
   const handleEmail = (e) => {
@@ -21,19 +23,15 @@ function Signup() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    setUsername('');
+    setDisplayName('');
     setEmail('');
     setPassword('');
 
-    console.log(username, email, password+);
+    signup(email, password, displayName);
   };
 
   return (
     <form className="signup-form" onSubmit={handleSubmit}>
-      <label>
-        <span>username:</span>
-        <input type="text" onChange={handleUsername} value={username} />
-      </label>
       <label>
         <span>email:</span>
         <input type="email" onChange={handleEmail} value={email} />
@@ -42,7 +40,17 @@ function Signup() {
         <span>password:</span>
         <input type="password" onChange={handlePassword} value={password} />
       </label>
-      <button className="btn">signup</button>
+      <label>
+        <span>displayName:</span>
+        <input type="text" onChange={handleDisplayName} value={displayName} />
+      </label>
+      {!isPending && <button className="btn">signup</button>}
+      {isPending && (
+        <button className="btn" disabled>
+          Loading
+        </button>
+      )}
+      {error && <p>{error}</p>}
     </form>
   );
 }
