@@ -25,7 +25,7 @@ function Signup() {
     setEmail('');
     setPassword('');
 
-    console.log(username, email, password);
+    console.log(username, email, password+);
   };
 
   return (
